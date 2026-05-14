@@ -26,6 +26,12 @@ spring:
           predicates:
             - Path=/api/inventario/**
 
+        - id: ms-menu
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/menu/**
+
+
 eureka:
   client:
     service-url:
