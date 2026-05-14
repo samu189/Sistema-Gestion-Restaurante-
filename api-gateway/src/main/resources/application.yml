@@ -36,6 +36,11 @@ spring:
           predicates:
             - Path=/api/detalle-pedido/**
 
+        - id: ms-reservas
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/reservas/**
+
 
 eureka:
   client:
