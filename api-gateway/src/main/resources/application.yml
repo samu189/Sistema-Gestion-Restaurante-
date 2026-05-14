@@ -11,17 +11,20 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        # RUTA DE USUARIOS (La que ya tenías y funciona)
-        - id: ruta-usuarios
+        - id: ms-usuarios
           uri: http://localhost:8081
           predicates:
             - Path=/api/usuarios/**
 
-        # RUTA DE PEDIDOS (La nueva entrada)
-        - id: ruta-pedidos
+        - id: ms-pedidos
           uri: http://localhost:8082
           predicates:
             - Path=/api/pedidos/**
+
+        - id: ms-inventario
+          uri: http://localhost:8083  # <--- Dirección directa al grano
+          predicates:
+            - Path=/api/inventario/**
 
 eureka:
   client:
