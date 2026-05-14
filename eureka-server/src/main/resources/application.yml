@@ -1,0 +1,54 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: ms-usuarios
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/usuarios/**
+
+        - id: ms-pedidos
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/pedidos/**
+
+        - id: ms-inventario
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/inventario/**
+
+        - id: ms-menu
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/menu/**
+
+        - id: ms-detalle-pedido
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/detalle-pedido/**
+
+        - id: ms-reservas
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/reservas/**
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway
