@@ -11,17 +11,25 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
+        # RUTA DE USUARIOS (La que ya tenías y funciona)
         - id: ruta-usuarios
           uri: http://localhost:8081
           predicates:
             - Path=/api/usuarios/**
 
+        # RUTA DE PEDIDOS (La nueva entrada)
+        - id: ruta-pedidos
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/pedidos/**
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-      management:
-        endpoints:
-          web:
-            exposure:
-              include: gateway
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway
