@@ -51,6 +51,11 @@ spring:
           predicates:
             - Path=/api/pagos/**
 
+        - id: ms-notificaciones
+          uri: http://localhost:8091
+          predicates:
+            - Path=/api/notificaciones/**
+
 
 eureka:
   client:
