@@ -56,6 +56,11 @@ spring:
           predicates:
             - Path=/api/notificaciones/**
 
+        - id: ms-mesas
+          uri: http://localhost:8092
+          predicates:
+            - Path=/api/mesas/**
+
 
 eureka:
   client:
