@@ -46,6 +46,11 @@ spring:
           predicates:
             - Path=/api/cocina/**
 
+        - id: ms-pagos
+          uri: http://localhost:8089
+          predicates:
+            - Path=/api/pagos/**
+
 
 eureka:
   client:
