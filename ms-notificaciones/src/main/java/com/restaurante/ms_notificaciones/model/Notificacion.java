@@ -1,6 +1,7 @@
 package com.restaurante.ms_notificaciones.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -12,8 +13,14 @@ public class Notificacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String destinatario; // Correo o teléfono del cliente
-    private String mensaje;      // Ej: "Tu mesa VIP 1 ya está lista"
-    private String tipo;         // CORREO, SMS, PUSH
-    private LocalDateTime fechaEnvio;
+    @NotBlank(message = "El destinatario (correo o teléfono) es obligatorio")
+    private String destinatario;
+
+    @NotBlank(message = "El contenido del mensaje es obligatorio")
+    private String mensaje;
+
+    @NotBlank(message = "El tipo de notificación es obligatorio (CORREO, SMS, PUSH)")
+    private String tipo;
+
+    private LocalDateTime fechaEnvio = LocalDateTime.now();
 }
