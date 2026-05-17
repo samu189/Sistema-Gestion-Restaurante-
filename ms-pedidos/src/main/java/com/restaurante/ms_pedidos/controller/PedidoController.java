@@ -4,6 +4,7 @@ import com.restaurante.ms_pedidos.dto.PedidoDTO;
 import com.restaurante.ms_pedidos.model.Pedido;
 import com.restaurante.ms_pedidos.response.ApiResponse;
 import com.restaurante.ms_pedidos.service.PedidoService;
+import jakarta.validation.Valid; // Importante para las validaciones de la rúbrica
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class PedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Pedido>> crear(@RequestBody PedidoDTO dto) {
+    public ResponseEntity<ApiResponse<Pedido>> crear(@Valid @RequestBody PedidoDTO dto) { // <--- Agregamos @Valid aquí
         // Convertimos el DTO a la Entidad (Model)
         Pedido pedido = new Pedido();
         pedido.setCliente(dto.getCliente());
@@ -40,6 +41,13 @@ public class PedidoController {
 
         Pedido guardado = service.guardar(pedido);
         return new ResponseEntity<>(new ApiResponse<>("Pedido creado exitosamente", guardado), HttpStatus.CREATED);
+    }
+
+    // 🔥 ENDPOINT CLAVE PARA LA COMUNICACIÓN INTER-SERVICIO (FEIGN CLIENT)
+    @PutMapping("/{id}/pagar")
+    public ResponseEntity<ApiResponse<Void>> actualizarEstadoAPagado(@PathVariable Long id) {
+        service.marcarComoPagado(id);
+        return ResponseEntity.ok(new ApiResponse<>("Estado del pedido actualizado a PAGADO remotamente", null));
     }
 
     @DeleteMapping("/{id}")
