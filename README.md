@@ -11,7 +11,7 @@
 * Samuel Berrios — *Aportes: Lógica de Negocio y Comunicación Inter-Microservicio y Modelos relacionales*
 * **Samuel Berrios** — *Aportes: Implementación de Validaciones Robustas (Bean Validation), Estructuración de Respuestas Unificadas (`ApiResponse`) e Integración de Logs Estructurados con SLF4J en Capa Controladora.*
 
----
+--
 
  Descripción General y Arquitectura
 Este proyecto consiste en un ecosistema distribuido para la gestión integral de un restaurante de alta demanda. La solución ha sido diseñada bajo una **Arquitectura de Microservicios** independientes, donde cada módulo posee su propia responsabilidad funcional y su propio esquema de persistencia relacional.
