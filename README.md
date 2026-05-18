@@ -45,7 +45,7 @@ A continuación se detallan los 10 microservicios obligatorios desarrollados par
 
 Comunicación Inter-Microservicio (Flujo Crítico)
 Para dar cumplimiento estricto al indicador **IE 2.4.1**, se implementó un consumo de endpoints remoto síncrono mediante Cliente HTTP:
-* **Flujo Origen:** `ms-pedidos` (Emisor) ➡️ **Flujo Destino:** `ms-pagos` (Receptor).
+* **Flujo Origen:** `ms-pedidos` (Emisor)  **Flujo Destino:** `ms-pagos` (Receptor).
 * **Mecánica:** Al confirmarse un pedido, el servicio emite una solicitud REST automática para gatillar el registro de la transacción en el módulo de pagos, garantizando la interoperabilidad sin acoplamiento de bases de datos mediante balanceo guiado por el Servidor de Descubrimiento (Eureka).
 
 ---
