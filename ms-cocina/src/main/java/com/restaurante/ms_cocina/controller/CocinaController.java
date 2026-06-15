@@ -2,63 +2,58 @@ package com.restaurante.ms_cocina.controller;
 
 import com.restaurante.ms_cocina.model.Cocina;
 import com.restaurante.ms_cocina.service.CocinaService;
+import com.restaurante.ms_cocina.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.CollectionModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-// IMPORTACIONES ESTÁTICAS PARA HATEOAS Y ANOTACIONES DE SWAGGER
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cocina")
 @Slf4j
-@Tag(name = "Controlador de Cocina", description = "Endpoints para gestionar las comandas y órdenes de la cocina")
+@Tag(name = "Cocina Controller", description = "Gestión de órdenes en tiempo real con soporte HATEOAS")
 public class CocinaController {
 
     @Autowired
     private CocinaService service;
 
     @GetMapping
-    @Operation(summary = "Listar órdenes", description = "Obtiene todas las órdenes registradas actualmente en la cocina")
-    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Lista de órdenes recuperada con éxito")
-    public ResponseEntity<com.restaurante.ms_cocina.response.ApiResponse<List<Cocina>>> listar() {
-        log.info("Petición HTTP recibida: GET /api/cocina - Consultando todas las órdenes en cocina.");
+    @Operation(summary = "Listar órdenes de cocina (HATEOAS)", description = "Obtiene los platos en preparación añadiendo links de navegación")
+    public ResponseEntity<ApiResponse<CollectionModel<EntityModel<Cocina>>>> listar() {
+        log.info("Petición HTTP: GET /api/cocina - Listando órdenes con HATEOAS.");
         List<Cocina> lista = service.listarOrdenes();
 
-        // Agregar enlaces HATEOAS a cada elemento de la lista (Opcional pero hiper profesional)
-        for (Cocina c : lista) {
-            if (!c.hasLinks()) {
-                c.add(linkTo(methodOn(CocinaController.class).listar()).withSelfRel());
-            }
-        }
+        // Especificamos el método genérico con <CocinaController> para romper el error visual de IntelliJ
+        List<EntityModel<Cocina>> hateoasItems = lista.stream()
+                .map(orden -> EntityModel.of(orden,
+                        linkTo(methodOn(CocinaController.class).listar()).withSelfRel()))
+                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new com.restaurante.ms_cocina.response.ApiResponse<>("Órdenes de cocina recuperadas con éxito", lista));
+        CollectionModel<EntityModel<Cocina>> model = CollectionModel.of(hateoasItems,
+                linkTo(methodOn(CocinaController.class).listar()).withSelfRel());
+
+        return ResponseEntity.ok(new ApiResponse<>("Órdenes obtenidas con éxito (HATEOAS)", model));
     }
 
     @PostMapping
-    @Operation(summary = "Crear nueva orden", description = "Envía una nueva comanda de plato a la cocina y genera sus hipervínculos HATEOAS")
-    @io.swagger.v3.oas.annotations.responses.ApiResponses(value = { // <-- Le agregamos el prefijo largo aquí
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "Orden creada y enviada a cocina con éxito"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
-    })
-    public ResponseEntity<com.restaurante.ms_cocina.response.ApiResponse<Cocina>> crear(@Valid @RequestBody Cocina cocina) {
-        log.info("Petición HTTP recibida: POST /api/cocina - Nueva comanda para el plato: '{}' x{}", cocina.getNombrePlato(), cocina.getCantidad());
-
-        // 1. Guardamos la orden normalmente en la BBDD
+    @Operation(summary = "Enviar orden a cocina (HATEOAS)", description = "Envía una nueva comanda y retorna el recurso con sus enlaces")
+    public ResponseEntity<ApiResponse<EntityModel<Cocina>>> crear(@Valid @RequestBody Cocina cocina) {
+        log.info("Petición HTTP: POST /api/cocina - Creando orden con HATEOAS.");
         Cocina nuevaOrden = service.guardarOrden(cocina);
 
-        // 2. Aplicamos HATEOAS: Le pegamos el link a sí mismo y el link para ver todas las órdenes
-        nuevaOrden.add(linkTo(methodOn(CocinaController.class).listar()).withRel("ver-todas-las-ordenes"));
+        EntityModel<Cocina> entityModel = EntityModel.of(nuevaOrden,
+                linkTo(methodOn(CocinaController.class).listar()).withRel("ver-todas-las-ordenes"));
 
-        // 3. Retornamos la respuesta con la estructura que ya usabas
-        return new ResponseEntity<>(new com.restaurante.ms_cocina.response.ApiResponse<>("Orden enviada a cocina con éxito", nuevaOrden), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponse<>("Orden registrada en cocina (HATEOAS)", entityModel), HttpStatus.CREATED);
     }
 }
