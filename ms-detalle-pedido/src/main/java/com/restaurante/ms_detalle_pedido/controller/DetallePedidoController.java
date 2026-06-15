@@ -8,33 +8,51 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.CollectionModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/detalle-pedido")
 @Slf4j
-@Tag(name = "Detalle Pedido Controller", description = "Endpoints para gestionar los platos/ítems individuales dentro de un pedido")
+@Tag(name = "Detalle Pedido Controller", description = "Gestión del desglose de ítems por pedido con soporte HATEOAS")
 public class DetallePedidoController {
 
     @Autowired
     private DetallePedidoService service;
 
     @GetMapping
-    @Operation(summary = "Listar todos los detalles", description = "Obtiene una lista con el desglose de absolutamente todos los pedidos de la base de datos")
-    public ResponseEntity<ApiResponse<List<DetallePedido>>> listar() {
-        log.info("Petición HTTP: GET /api/detalle-pedido - Listando el desglose de todos los pedidos.");
-        return ResponseEntity.ok(new ApiResponse<>("Detalles obtenidos con éxito", service.listarTodos()));
+    @Operation(summary = "Listar detalles (HATEOAS)", description = "Obtiene los desgloses agregando enlaces dinámicos")
+    public ResponseEntity<ApiResponse<CollectionModel<EntityModel<DetallePedido>>>> listar() {
+        log.info("Petición HTTP: GET /api/detalle-pedido - Listando desgloses con HATEOAS.");
+        List<DetallePedido> lista = service.listarTodos();
+
+        List<EntityModel<DetallePedido>> hateoasItems = lista.stream()
+                .map(detalle -> EntityModel.of(detalle,
+                        linkTo(methodOn(DetallePedidoController.class).listar()).withSelfRel()))
+                .collect(Collectors.toList());
+
+        CollectionModel<EntityModel<DetallePedido>> model = CollectionModel.of(hateoasItems,
+                linkTo(methodOn(DetallePedidoController.class).listar()).withSelfRel());
+
+        return ResponseEntity.ok(new ApiResponse<>("Detalles obtenidos con éxito (HATEOAS)", model));
     }
 
     @PostMapping
-    @Operation(summary = "Crear un nuevo ítem/detalle", description = "Registra un producto, cantidad y precio asociado a un ID de pedido principal")
-    public ResponseEntity<ApiResponse<DetallePedido>> crear(@Valid @RequestBody DetallePedido detalle) {
-        log.info("Petición HTTP: POST /api/detalle-pedido - Registrando ítem para el Pedido ID: {} (Menu ID: {}, Cantidad: {})",
-                detalle.getPedidoId(), detalle.getMenuId(), detalle.getCantidad());
+    @Operation(summary = "Crear detalle (HATEOAS)", description = "Registra un ítem en el pedido y devuelve el recurso interactivo")
+    public ResponseEntity<ApiResponse<EntityModel<DetallePedido>>> crear(@Valid @RequestBody DetallePedido detalle) {
+        log.info("Petición HTTP: POST /api/detalle-pedido - Creando detalle con HATEOAS.");
         DetallePedido nuevoDetalle = service.guardar(detalle);
-        return new ResponseEntity<>(new ApiResponse<>("Detalle registrado correctamente", nuevoDetalle), HttpStatus.CREATED);
+
+        EntityModel<DetallePedido> entityModel = EntityModel.of(nuevoDetalle,
+                linkTo(methodOn(DetallePedidoController.class).listar()).withRel("ver-todos-los-detalles"));
+
+        return new ResponseEntity<>(new ApiResponse<>("Detalle registrado correctamente (HATEOAS)", entityModel), HttpStatus.CREATED);
     }
 }
