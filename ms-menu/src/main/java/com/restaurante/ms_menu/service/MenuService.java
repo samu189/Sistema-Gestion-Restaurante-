@@ -8,6 +8,7 @@ import java.util.List;
 
 @Service
 public class MenuService {
+
     @Autowired
     private MenuRepository repository;
 
@@ -17,5 +18,10 @@ public class MenuService {
 
     public Menu guardar(Menu menu) {
         return repository.save(menu);
+    }
+
+    // AGREGADO: Buscar un plato específico por su ID para soporte inter-servicio
+    public Menu buscarPorId(Long id) {
+        return repository.findById(id).orElse(null);
     }
 }

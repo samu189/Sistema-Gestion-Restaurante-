@@ -57,4 +57,19 @@ public class MenuController {
 
         return new ResponseEntity<>(new ApiResponse<>("Plato añadido al menú con éxito (HATEOAS)", entityModel), HttpStatus.CREATED);
     }
+
+    // AGREGADO: Endpoint de comunicación inter-servicio exigido por la rúbrica
+    @GetMapping("/{id}")
+    @Operation(summary = "Buscar un plato por ID (Uso Interno/Inter-servicio)", description = "Permite a otros microservicios (como ms-pedidos) verificar la existencia de un plato específico")
+    public ResponseEntity<Menu> buscarPorId(@PathVariable Long id) {
+        log.info("Petición HTTP interna: GET /api/menu/{} - Consultando existencia del plato.", id);
+
+        Menu plato = service.buscarPorId(id);
+
+        if (plato == null) {
+            log.warn("Comunicación interna: El plato con ID {} no fue encontrado.", id);
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(plato);
+    }
 }
