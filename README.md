@@ -3,9 +3,8 @@
 Este proyecto consiste en una arquitectura distribuida basada en microservicios independientes para la gestión integral de un restaurante. El sistema implementa comunicación orientada a servicios, persistencia aislada, documentación técnica automatizada y pruebas unitarias para el núcleo del negocio.
 
 ## 👥 Integrantes del Equipo
-* Samuel (samu189)
-* [Nombre de tu compañero/a]
-* [Nombre de tu otro compañero/a si aplica]
+* Samuel Berrios
+* Benjamin Quintanilla
 
 ---
 
