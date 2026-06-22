@@ -13,6 +13,7 @@ services:
       - restaurante-network
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   # Servidor de Descubrimiento (Eureka) - Puerto 8761
   eureka-server:
