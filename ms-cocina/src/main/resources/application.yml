@@ -26,3 +26,16 @@ eureka:
 # EVITAR CONFLICTO ENTRE SWAGGER Y HATEOAS
 springdoc:
   use-management-port: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    url: jdbc:mysql://host.docker.internal:3306/db_cocina
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/

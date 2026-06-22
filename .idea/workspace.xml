@@ -1,7 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="9def1c8f-6292-4a29-beac-8a894aa0de0c" name="Changes" comment="" />
+    <list default="true" id="9def1c8f-6292-4a29-beac-8a894aa0de0c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/api-gateway/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eureka-server/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-cocina/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-detalle-pedido/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-inventario/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-menu/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-mesas/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-notificaciones/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-pagos/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-pedidos/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-reservas/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ms-usuarios/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/src/test/java/com/restaurante/api_gateway/ApiGatewayApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eureka-server/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/eureka-server/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-cocina/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-cocina/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-detalle-pedido/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-detalle-pedido/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-inventario/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-inventario/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-menu/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-menu/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-mesas/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-mesas/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-notificaciones/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-notificaciones/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-pagos/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-pagos/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-pedidos/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-pedidos/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-reservas/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-reservas/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-usuarios/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/ms-usuarios/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ms-usuarios/src/test/java/com/restaurante/ms_usuarios/MsUsuariosApplicationTests.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,10 +42,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3DhgxcwODSQdgjQIwiRr97S8DwK" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -23,12 +55,18 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/samuel/Sistema-Gestion-Restaurante-"
+    "last_opened_file_path": "C:/Users/samuel/Sistema-Gestion-Restaurante-",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
   }
 }]]></component>
   <component name="TaskManager">

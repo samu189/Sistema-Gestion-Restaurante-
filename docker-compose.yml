@@ -1,0 +1,165 @@
+version: '3.8'
+
+services:
+  # Base de Datos Unificada en Docker
+  db-mysql:
+    image: mysql:8.0
+    container_name: db-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      - restaurante-network
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # Servidor de Descubrimiento (Eureka) - Puerto 8761
+  eureka-server:
+    build:
+      context: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - restaurante-network
+
+  # API Gateway - Puerto 8090
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8090:8090"
+    depends_on:
+      - eureka-server
+    networks:
+      - restaurante-network
+
+  # Microservicios de Negocio (Ordenados según tus puertos oficiales)
+  ms-usuarios:
+    build:
+      context: ./ms-usuarios
+    container_name: ms-usuarios
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    networks:
+      - restaurante-network
+
+  ms-pedidos:
+    build:
+      context: ./ms-pedidos
+    container_name: ms-pedidos
+    ports:
+      - "8082:8082"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    networks:
+      - restaurante-network
+
+  ms-inventario:
+    build:
+      context: ./ms-inventario
+    container_name: ms-inventario
+    ports:
+      - "8083:8083"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    networks:
+      - restaurante-network
+
+  ms-menu:
+    build:
+      context: ./ms-menu
+    container_name: ms-menu
+    ports:
+      - "8085:8085"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    networks:
+      - restaurante-network
+
+  ms-detalle-pedido:
+    build:
+      context: ./ms-detalle-pedido
+    container_name: ms-detalle-pedido
+    ports:
+      - "8086:8086"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    networks:
+      - restaurante-network
+
+  ms-reservas:
+    build:
+      context: ./ms-reservas
+    container_name: ms-reservas
+    ports:
+      - "8087:8087"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    networks:
+      - restaurante-network
+
+  ms-cocina:
+    build:
+      context: ./ms-cocina
+    container_name: ms-cocina
+    ports:
+      - "8088:8088"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    networks:
+      - restaurante-network
+
+  ms-pagos:
+    build:
+      context: ./ms-pagos
+    container_name: ms-pagos
+    ports:
+      - "8089:8089"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    networks:
+      - restaurante-network
+
+  ms-notificaciones:
+    build:
+      context: ./ms-notificaciones
+    container_name: ms-notificaciones
+    ports:
+      - "8091:8091"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    networks:
+      - restaurante-network
+
+  ms-mesas:
+    build:
+      context: ./ms-mesas
+    container_name: ms-mesas
+    ports:
+      - "8092:8092"
+    depends_on:
+      - db-mysql
+      - eureka-server
+    networks:
+      - restaurante-network
+
+networks:
+  restaurante-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

@@ -9,8 +9,17 @@ eureka:
   instance:
     hostname: localhost
   client:
-    # Estas dos líneas son la clave:
     register-with-eureka: false
     fetch-registry: false
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+eureka:
+  instance:
+    hostname: eureka-server

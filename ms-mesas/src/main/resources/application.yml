@@ -5,7 +5,7 @@ spring:
   application:
     name: ms-mesas
   datasource:
-    url: jdbc:mysql://localhost:3306/db_mesas
+    url: jdbc:mysql://db-mysql:3306/db_mesas
     username: root
     password:
   jpa:
@@ -16,6 +16,6 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://eureka-server:8761/eureka/
   instance:
     prefer-ip-address: true
