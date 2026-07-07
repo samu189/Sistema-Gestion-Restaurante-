@@ -52,7 +52,7 @@ public class PedidoServiceTest {
         ResponseEntity<Map<String, Object>> responseEntity = ResponseEntity.ok(respuestaMenuSimulada);
 
         // Comportamiento de los Mocks
-        when(menuFeignClient.buscarPorId(1L)).thenReturn(responseEntity);
+        when(menuFeignClient.buscarPorId(anyLong())).thenReturn(responseEntity);
         when(repository.save(any(Pedido.class))).thenReturn(pedidoGuardado);
 
         // WHEN: Ejecutamos el método a testear
