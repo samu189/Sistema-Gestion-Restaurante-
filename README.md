@@ -5,9 +5,8 @@ Este repositorio contiene la solución tecnológica integral para la gestión op
 ---
 
 ## 👥 Integrantes del Equipo (Grupo)
-* **Samuel [Tu Apellido Aquí]** - Desarrollo Backend / QA & Unit Testing
-* **[Nombre Compañero 1]** - Desarrollo Backend / DevOps
-* **[Nombre Compañero 2]** - Desarrollo Backend / Documentación
+* **Samuel berrios** - Desarrollo Backend / QA & Unit Testing / Documentación
+* **benjamin quintanilla** - Desarrollo Backend / DevOps
 
 ---
 
@@ -51,8 +50,3 @@ El núcleo de la lógica de negocio se encuentra blindado mediante pruebas unita
 * Java 17 o Java 21 (JDK instalado y configurado en las variables de entorno).
 * Apache Maven 3.8+.
 * Motor de Base de Datos compatible (según los perfiles configurados en `application.yml`).
-
-### Pasos para levantar el ecosistema:
-1. Clonar el repositorio:
-   ```bash
-   git clone [URL_DE_TU_REPOSITORIO_AQUÍ]
