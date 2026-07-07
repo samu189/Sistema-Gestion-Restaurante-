@@ -1,57 +1,58 @@
 # 🍽️ Sistema de Gestión de Restaurante - Arquitectura de Microservicios
 
-Este proyecto consiste en una arquitectura distribuida basada en microservicios independientes para la gestión integral de un restaurante. El sistema implementa comunicación orientada a servicios, persistencia aislada, documentación técnica automatizada y pruebas unitarias para el núcleo del negocio.
-
-## 👥 Integrantes del Equipo
-* Samuel Berrios
-* Benjamin Quintanilla
+Este repositorio contiene la solución tecnológica integral para la gestión operativa y comercial de un restaurante de alta demanda, desarrollada bajo una **Arquitectura Orientada a Microservicios** utilizando el ecosistema de **Spring Cloud**. El proyecto ha sido diseñado aplicando principios de alta cohesión, bajo acoplamiento, escalabilidad horizontal, tolerancia a fallos y validación rigurosa de reglas de negocio.
 
 ---
 
-## 🚀 Ecosistema de Microservicios
-
-A continuación, se detallan los 10 microservicios implementados, sus responsabilidades principales, las tecnologías clave aplicadas según la rúbrica y sus puertos de acceso local:
-
-| Microservicio | Puerto | Componentes Destacados / Tecnologías | Enlace Swagger (Local) |
-| :--- | :---: | :--- | :--- |
-| **eureka-server** | `8761` | Servidor de Descubrimiento (Spring Cloud Netflix Eureka) | N/A |
-| **api-gateway** | `8090` | Centralización de Rutas y Filtros de Acceso | N/A |
-| **ms-mesas** | `8092` | Gestión de Capacidad y Estados / **Mockito Tests** | [Ver Swagger](http://localhost:8092/swagger-ui.html) |
-| **ms-menu** | `8085` | Catálogo de Platos y Precios / **Mockito Tests** | [Ver Swagger](http://localhost:8085/swagger-ui.html) |
-| **ms-pedidos** | `8082` | Orquestación / **Mockito Tests (Feign Client + Mockito)** | [Ver Swagger](http://localhost:8082/swagger-ui.html) |
-| **ms-cocina** | `8088` | Cola de Preparación de Pedidos / Soporte **HATEOAS** | [Ver Swagger](http://localhost:8088/swagger-ui.html) |
-| **ms-detalle-pedido**| `8086` | Desglose e Ítems de Comandas / Soporte **HATEOAS** | [Ver Swagger](http://localhost:8086/swagger-ui.html) |
-| **ms-inventario** | `8083` | Control de Stock e Insumos / Soporte **HATEOAS** | [Ver Swagger](http://localhost:8083/swagger-ui.html) |
-| **ms-notificaciones**| `8091` | Alertas de Estado al Cliente / Soporte **HATEOAS** | [Ver Swagger](http://localhost:8091/swagger-ui.html) |
-| **ms-pagos** | `8089` | Procesamiento de Boletas y Transacciones / Soporte **HATEOAS** | [Ver Swagger](http://localhost:8089/swagger-ui.html) |
-| **ms-reservas** | `8087` | Agendamiento Anticipado / Soporte **HATEOAS** | [Ver Swagger](http://localhost:8087/swagger-ui.html) |
-| **ms-usuarios** | `8081` | Gestión de Roles y Autenticación / Soporte **HATEOAS** | [Ver Swagger](http://localhost:8081/swagger-ui.html) |
+## 👥 Integrantes del Equipo (Grupo)
+* **Samuel [Tu Apellido Aquí]** - Desarrollo Backend / QA & Unit Testing
+* **[Nombre Compañero 1]** - Desarrollo Backend / DevOps
+* **[Nombre Compañero 2]** - Desarrollo Backend / Documentación
 
 ---
 
-## 🧪 Validación y Calidad: Pruebas Unitarias
+## 🏗️ Resumen de la Arquitectura del Sistema
+La solución se compone de un ecosistema distribuido donde cada microservicio encapsula su propio dominio de negocio y base de datos independiente, comunicándose de forma síncrona mediante **OpenFeign** y centralizando el flujo de tráfico a través de un **API Gateway**.
 
-El núcleo de las reglas de negocio (`ms-mesas`, `ms-menu` y `ms-pedidos`) se encuentra completamente blindado mediante pruebas unitarias que validan el comportamiento del dominio bajo el patrón **Given-When-Then**:
-* **Aislamiento Eficaz:** Uso exhaustivo de `@Mock` y `@InjectMocks` (Mockito) para simular la capa de persistencia sin alterar datos reales.
-* **Simulación Inter-Servicios:** El microservicio `ms-pedidos` simula las llamadas remotas exitosas/fallidas de su cliente declarativo Feign (`MenuFeignClient`) aislando el test de caídas de red externas.
-* **Cobertura:** Cumplimiento de la cobertura mínima exigida sobre las funciones críticas de negocio.
+### Componentes de Infraestructura Global:
+* **Spring Cloud Gateway:** Enrutador único y centralizado del sistema que gestiona la seguridad y el redireccionamiento mediante configuraciones dinámicas en formato `YAML`.
+* **Swagger / OpenAPI 3:** Documentación interactiva e independiente expuesta en cada microservicio para validar contratos y esquemas JSON.
 
 ---
 
-## 📦 Instrucciones de Ejecución
+## 📦 Lista de Microservicios Implementados (Negocio)
+Para dar cumplimiento estricto a la pauta de evaluación (Mínimo 10 microservicios por equipo), el ecosistema está distribuido de la siguiente manera:
 
-### Requisitos Previos
-* Java JDK 21 instalado.
-* Motor de Base de Datos operativo (XAMPP / MySQL).
+1. **`ms-usuarios`**: Gestión de perfiles, autenticación, roles de empleados (garzones, cocineros, administradores) y clientes VIP.
+2. **`ms-inventario`**: Control físico de insumos en bodega, stock mínimo de ingredientes y alertas de desabastecimiento.
+3. **`ms-pedidos`**: Orquestación y ciclo de vida de los pedidos maestros de las mesas. Se comunica vía Feign con `ms-menu`.
+4. **`ms-detalle-pedido`**: Gestión granular de las líneas de comandas, realizando cálculos automáticos de subtotales financieros en base a cantidad y precio unitario.
+5. **`ms-cocina`**: Panel operativo para el equipo culinario. Controls el flujo de preparación de comandas y asigna estados automáticos de "PENDIENTE".
+6. **`ms-notificaciones`**: Central de alertas del sistema. Despacha confirmaciones operativas registrando estampas de tiempo (`LocalDateTime`) precisas.
+7. **`ms-pagos`**: Pasarela transaccional para la liquidación financiera de pedidos, con persistencia local y sincronización remota hacia `ms-pedidos`.
+8. **`ms-reservas`**: Módulo de agendamiento anticipado de cubiertos y asignación de zonas (VIP, Terraza, Salón principal).
+9. **`ms-mesas`**: Control de disponibilidad física de recursos del restaurante (Libre, Ocupada, Reservada, En Limpieza).
+10. **`ms-menu`**: Catálogo maestro de platillos, categorías gastronómicas, descripciones funcionales y precios vigentes.
 
-### Ejecución Local Tradicional (IDE)
-1. Iniciar en primer lugar el proyecto **eureka-server**.
-2. Levantar el ecosistema de microservicios de negocio y soporte.
-3. Iniciar el componente **api-gateway** para habilitar el enrutamiento centralizado.
+---
 
-### Ejecución Local Contenedorizada (Docker)
-1. Compilar los paquetes ejecutables ejecutando `.\mvnw.cmd clean package` en la raíz de cada servicio.
-2. Desde la raíz principal del proyecto donde reside el archivo `docker-compose.yml`, ejecutar en consola:
-```bash
-   docker compose build
-   docker compose up -d
+## 🧪 Estrategia de Calidad y Pruebas Unitarias (JUnit 5 & Mockito)
+El núcleo de la lógica de negocio se encuentra blindado mediante pruebas unitarias rigurosas, logrando una alta cobertura de código y garantizando la estabilidad ante cambios.
+
+* **Aislamiento de Dependencias:** Uso estricto de `@Mock` y `@InjectMocks` para independizar la capa de servicios de la persistencia real.
+* **Simulación Remota Avanzada:** Empleo de `when().thenReturn()` y `doNothing()` para interceptar y emular llamadas HTTP entre microservicios a través de clientes OpenFeign (ej. simulación en `ms-pedidos` y `ms-pagos`).
+* **Validación de Reglas de Negocio:** Aserciones robustas (`assertEquals`, `assertNotNull`) que verifican cálculos automáticos de subtotales, inyección automática de marcas de tiempo y transiciones de estados por defecto ("PENDIENTE", "COMPLETADO", "CONFIRMADA").
+
+---
+
+## 🚀 Instrucciones de Ejecución en Entorno Local
+
+### Requisitos Previos:
+* Java 17 o Java 21 (JDK instalado y configurado en las variables de entorno).
+* Apache Maven 3.8+.
+* Motor de Base de Datos compatible (según los perfiles configurados en `application.yml`).
+
+### Pasos para levantar el ecosistema:
+1. Clonar el repositorio:
+   ```bash
+   git clone [URL_DE_TU_REPOSITORIO_AQUÍ]
